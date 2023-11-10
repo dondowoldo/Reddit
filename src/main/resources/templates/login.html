@@ -21,9 +21,9 @@
                   <div class="card border-0 shadow text-center">
                     <div class="card-body">
                         <img class="mx-auto" width="70" height="70" src="greenfox.png" alt="">
-                      <form action="">
-                        <input type="text" name="" id="" class="form-control my-4 py-2" placeholder="Username" />
-                        <input type="text" name="" id="" class="form-control my-4 py-2" placeholder="Password" />
+                      <form th:action="@{/login}" method="post">
+                        <input type="text" name="email" class="form-control my-4 py-2" placeholder="E-mail" />
+                        <input type="password" name="password" class="form-control my-4 py-2" placeholder="Password" />
                         <div class="text-center mt-3">
                           <button class="btn btn-success mb-2">Login</button>
                           <a href="#" class="nav-link">Don't have an account yet ?</a>

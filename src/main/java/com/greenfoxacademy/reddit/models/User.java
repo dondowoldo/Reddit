@@ -23,7 +23,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Vote> votes;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private List<Post> posts;
 
     public User() {
@@ -36,5 +36,9 @@ public class User {
         this.name = name;
         this.email = email;
         this.password = password;
+    }
+
+    public void addPost(Post post) {
+        this.posts.add(post);
     }
 }
