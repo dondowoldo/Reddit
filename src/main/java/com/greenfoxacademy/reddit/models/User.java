@@ -5,9 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 @Setter
@@ -20,13 +18,16 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private Privilege privilege;
+    private Role role;
+
+    @OneToMany(mappedBy = "user")
+    private List<Vote> votes;
 
     @OneToMany(mappedBy = "user")
     private List<Post> posts;
 
     public User() {
-        this.privilege = Privilege.USER;
+        this.role = Role.USER;
         this.posts = new ArrayList<>();
     }
 

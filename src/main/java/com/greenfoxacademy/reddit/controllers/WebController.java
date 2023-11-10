@@ -25,8 +25,9 @@ public class WebController {
     @GetMapping("/")
     public String index(Model model) {
 
-        model.addAttribute("testUser", userService.findById(1l).get());
-        model.addAttribute("testPost", postService.findById(1l).get());
+
+//        model.addAttribute("testUser", userService.findById(1l).get());
+//        model.addAttribute("testPost", postService.findById(1l).get());
         return "index";
     }
 

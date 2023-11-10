@@ -1,5 +1,5 @@
 package com.greenfoxacademy.reddit.models;
 
-public enum Privilege {
+public enum Role {
     USER, MOD, ADMIN
 }
