@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Homepage</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/styles.css}">
+    <link rel="stylesheet" href="../static/styles.css">
+  </head>
+  <body>
+    <div class="container">
+        <nav class="py-2 bg-body-tertiary border-bottom">
+            <div class="container d-flex flex-wrap">
+              <ul class="nav me-auto">
+                <li class="nav-item"><a href="#" class="nav-link link-body-emphasis px-2 active" aria-current="page">Home</a></li>
+                <li class="nav-item"><a href="#" class="nav-link link-body-emphasis px-2">Add a new post</a></li>
+              </ul>
+              <ul class="nav">
+                <li class="nav-item"><a href="#" class="nav-link link-body-emphasis px-2">Login</a></li>
+                <li class="nav-item"><a href="#" class="nav-link link-body-emphasis px-2">Sign up</a></li>
+              </ul>
+            </div>
+          </nav>
+          <header class="py-3 mb-4 border-bottom">
+            <div class="container d-flex flex-wrap justify-content-center">
+              <a href="/" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto link-body-emphasis text-decoration-none">
+                <img class="bi me-2" width="40" height="40" src="greenfox.png" alt="">
+                <span class="fs-4">Better Reddit</span>
+              </a>
+              <form class="col-12 col-lg-auto mb-3 mb-lg-0" role="search">
+                <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+              </form>
+            </div>
+          </header>
+        
+
+          <div class="card post">
+            <div class="card-header">
+              Post Title
+            </div>
+            <div class="card-body post-body">
+                <div class="vote">
+                    <img alt="^" title="vote up"   src="/images/up.arrow.png" />
+                    <img alt="v" title="vote down" src="/images/down.arrow.png" />
+                </div>
+              <blockquote class="blockquote mb-0">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+                <footer class="blockquote-footer">Posted by :  <cite title="Source Title">Daniel</cite></footer>
+              </blockquote>
+            </div>
+          </div>
+
+          <div class="card post">
+            <div class="card-header">
+              Post Title
+            </div>
+            <div class="card-body post-body">
+              <blockquote class="blockquote mb-0">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+                <footer class="blockquote-footer">Posted by :  <cite title="Source Title">Daniel</cite></footer>
+              </blockquote>
+            </div>
+          </div>
+
+          <div class="card post">
+            <div class="card-header">
+              Post Title
+            </div>
+            <div class="card-body post-body">
+              <blockquote class="blockquote mb-0">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+                <footer class="blockquote-footer">Posted by :  <cite title="Source Title">Daniel</cite></footer>
+              </blockquote>
+            </div>
+          </div>
+
+          <div class="card post">
+            <div class="card-header">
+              Post Title
+            </div>
+            <div class="card-body post-body">
+              <blockquote class="blockquote mb-0">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+                <footer class="blockquote-footer">Posted by :  <cite title="Source Title">Daniel</cite></footer>
+              </blockquote>
+            </div>
+          </div>
+
+          <div class="card post">
+            <div class="card-header">
+              Post Title
+            </div>
+            <div class="card-body post-body">
+              <blockquote class="blockquote mb-0">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+                <footer class="blockquote-footer">Posted by :  <cite title="Source Title">Daniel</cite></footer>
+              </blockquote>
+            </div>
+          </div>
+
+          <ul th:object="${testUser}">
+            <li th:text="*{id}"></li>
+            <li th:text="*{name}"></li>
+            <li th:text="*{email}"></li>
+            <li th:text="*{getPosts()}"></li>
+          </ul>
+
+          <ul th:object="${testPost}">
+            <li th:text="*{id}"></li>
+            <li th:text="*{title}"></li>
+            <li th:text="*{description}"></li>
+            <li th:text="*{getUser().name}"></li>
+          </ul>
+
+
+
+
+
+
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  </body>
+</html>
