@@ -13,35 +13,27 @@ import java.util.Set;
 @Setter
 @Getter
 @Entity
-@Table(name = "users")
 public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
     private String email;
+    private String password;
     private Privilege privilege;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user")
     private List<Post> posts;
-
-    @ManyToMany(mappedBy = "upvoters")
-    private Set<Post> upvotedPosts;
-
-    @ManyToMany(mappedBy = "downvoters")
-    private Set<Post> downvotedPosts;
-
 
     public User() {
         this.privilege = Privilege.USER;
         this.posts = new ArrayList<>();
-        this.upvotedPosts = new HashSet<>();
-        this.downvotedPosts = new HashSet<>();
     }
 
-    public User(String name, String email) {
+    public User(String name, String email, String password) {
         this();
         this.name = name;
         this.email = email;
+        this.password = password;
     }
 }

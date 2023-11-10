@@ -12,39 +12,20 @@ import java.util.Set;
 @Setter
 @Getter
 @Entity
-@Table(name = "posts")
 public class Post {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String title;
     private String description;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @Temporal(TemporalType.TIMESTAMP)
     private Timestamp createDate;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name="up_votes",
-            joinColumns = @JoinColumn(name="post_id"),
-            inverseJoinColumns = @JoinColumn(name="user_id")
-    )
-    private Set<User> upvoters;
-
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name="down_votes",
-            joinColumns = @JoinColumn(name="post_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private Set<User> downvoters;
+    @ManyToOne
+    private User user;
 
 
     public Post() {
-        this.upvoters = new HashSet<>();
-        this.downvoters = new HashSet<>();
+        this.createDate = new Timestamp(System.currentTimeMillis());
     }
 
     public Post(String title, String description) {
