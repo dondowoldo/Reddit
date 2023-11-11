@@ -43,7 +43,7 @@
     gap: 1rem;
 }
 
-#uparrow {
+#uparrow, #downarrow {
     transition: 0.5s;
 }
 #uparrow:hover {
@@ -52,11 +52,12 @@
     transform: scale(1.5);
 }
 
-#downarrow {
-    transition: 0.5s;
-}
-
 #downarrow:hover {
     transition: 0.5s;
     transform: scale(1.5);
+}
+
+.arrowbutton {
+    border: none;
+    background: none;
 }

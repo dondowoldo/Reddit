@@ -5,37 +5,39 @@ import com.greenfoxacademy.reddit.models.User;
 import com.greenfoxacademy.reddit.services.DbService;
 import com.greenfoxacademy.reddit.services.PostService;
 import com.greenfoxacademy.reddit.services.UserService;
+import com.greenfoxacademy.reddit.services.VoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
-import javax.security.auth.login.LoginException;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 public class WebController {
     private UserService userService;
     private PostService postService;
     private DbService dbService;
+    private VoteService voteService;
 
     @Autowired
-    public WebController(UserService userService, PostService postService, DbService dbService) {
+    public WebController(UserService userService,
+                         PostService postService,
+                         DbService dbService,
+                         VoteService voteService) {
         this.userService = userService;
         this.postService = postService;
         this.dbService = dbService;
+        this.voteService = voteService;
     }
 
     @GetMapping({"/", "/posts"})
-    public String index(Model model, String search) {
+    public String index(Model model, String searched) {
 
         model.addAttribute("isLoggedIn", userService.loggedIn());
-        model.addAttribute("posts", postService.findAllDescOrder(search));
-        model.addAttribute("searched", search);
+        model.addAttribute("posts", postService.findAllDescOrder(searched));
+        model.addAttribute("searched", searched);
         return "index";
     }
 
@@ -74,6 +76,15 @@ public class WebController {
     public String logout() {
         userService.logOut();
         return "redirect:/";
+    }
+
+    @PutMapping("/vote")
+    public String votePost(Integer vote, Long postId) {
+        if (userService.loggedIn()) {
+            dbService.addVote(vote, postId, userService.getLoggedInUser());
+            return "redirect:/";
+        }
+        return "redirect:/login";
     }
 
 }

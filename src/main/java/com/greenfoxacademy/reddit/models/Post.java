@@ -35,8 +35,23 @@ public class Post {
         this.description = description;
     }
 
+    public void addVote(Vote vote) {
+        this.votes.add(vote);
+    }
+
+    public void deleteVote(Vote vote) {
+        this.votes.remove(vote);
+    }
+
     @Override
     public String toString() {
         return this.title;
     }
+
+    public int postScore() {
+        return votes.stream()
+                .mapToInt(Vote::getValue)
+                .sum();
+    }
+
 }

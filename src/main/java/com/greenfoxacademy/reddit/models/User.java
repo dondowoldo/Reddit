@@ -20,7 +20,7 @@ public class User {
     private String password;
     private Role role;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private List<Vote> votes;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
@@ -40,5 +40,13 @@ public class User {
 
     public void addPost(Post post) {
         this.posts.add(post);
+    }
+
+    public void addVote(Vote vote) {
+        this.votes.add(vote);
+    }
+
+    public void deleteVote(Vote vote) {
+        this.votes.remove(vote);
     }
 }

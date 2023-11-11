@@ -34,16 +34,17 @@ public class PostService {
     public List<Post> findAllDescOrder(String search) {
         return posts.findAll()
                 .stream()
-                .filter(p -> {
-                    if (search == null) {
-                        return true;
-                    }
-                    return (p.getTitle().toLowerCase().contains(search.toLowerCase()) ||
-                            p.getDescription().toLowerCase().contains(search.toLowerCase()));
-                })
+                .filter(p -> search == null ? true : (
+                        p.getTitle().toLowerCase().contains(search.toLowerCase()) ||
+                        p.getDescription().toLowerCase().contains(search.toLowerCase()))
+                )
                 .sorted(Comparator.comparing(Post :: getCreateDate)
                 .reversed())
-                    .collect(Collectors.toList());
+                .collect(Collectors.toList());
+    }
+
+    public Optional<Post> getPostById(Long id) {
+        return posts.findById(id);
     }
 
 }

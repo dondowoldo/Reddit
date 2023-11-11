@@ -32,8 +32,8 @@
                 <span class="fs-2">Foxxit</span>
               </a>
               <form style="margin-top: 7px" class="col-12 col-lg-auto mb-3 mb-lg-0" role="search">
-                <input th:if="${searched != null}" name="search" th:value="${searched}" type="search" class="form-control" placeholder="Search..." aria-label="Search">
-                <input th:unless="${searched != null}" name="search" type="search" class="form-control" placeholder="Search..." aria-label="Search">
+                <input th:if="${searched != null}" name="searched" th:value="${searched}" type="search" class="form-control" placeholder="Search..." aria-label="Search">
+                <input th:unless="${searched != null}" name="searched" type="search" class="form-control" placeholder="Search..." aria-label="Search">
               </form>
             </div>
           </header>
@@ -41,10 +41,13 @@
 
           <div class="card post" th:each="post : ${posts}">
             <div class="card-header">
-              <span style="display: inline; font-size: 1.2em" th:text="'(10)'"></span>
+              <span style="display: inline; font-size: 1.2em" th:text="${post.postScore()}"></span>
               <div class="vote">
-                <img id="uparrow" class="fluid" alt="^" title="vote up" src="up-arrow.svg" />
-                <img id="downarrow" class="fluid" alt="v" title="vote down" src="down-arrow.svg" />
+                <form class="vote" th:action="@{/vote}" th:method="put">
+                  <input type="hidden" name="postId" th:value="${post.id}">
+                  <button class="arrowbutton" type="submit" name="vote" value="1"><img id="uparrow" src="up-arrow.svg" alt="^" title="vote up"></button>
+                  <button class="arrowbutton" type="submit" name="vote" value="-1"><img id="downarrow" src="down-arrow.svg" alt="v" title="vote down"></button>
+                </form>
               </div>
 
               <span style="display: inline; font-size: 1.2em; margin-left: 3rem" th:text="${post.title}"></span>

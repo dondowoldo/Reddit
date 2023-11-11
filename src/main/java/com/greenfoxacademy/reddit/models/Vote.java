@@ -26,4 +26,5 @@ public class Vote {
         this.user = user;
         this.post = post;
     }
+
 }
