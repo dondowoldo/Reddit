@@ -9,13 +9,13 @@
   </head>
   <body>
     <div class="container">
-        <nav th:replace="~{fragments.html :: navFragment}"></nav>
-          <header th:replace="~{fragments.html :: headerFragment}"></header>
+        <nav th:replace="~{fragments/fragments.html :: navFragment}"></nav>
+          <header th:replace="~{fragments/fragments.html :: headerFragment}"></header>
 
           <div class="card post" th:each="post : ${posts}">
             <div class="card-header">
               <span style="display: inline; font-size: 1.2em; font-family: monospace" th:text="${post.postScore()}"></span>
-              <div class="vote" th:replace="~{fragments.html :: voteFragment}"></div>
+              <div class="vote" th:replace="~{fragments/fragments.html :: voteFragment}"></div>
               <span style="display: inline; font-size: 1.2em; margin-left: 3rem" th:text="${post.title}"></span>
             </div>
             <div class="card-body post-body">

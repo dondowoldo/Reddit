@@ -44,17 +44,12 @@
 #uparrow, #downarrow {
     transition: 0.5s;
 }
-#uparrow:hover {
+#uparrow:hover, #downarrow:hover {
     transition: 0.5s;
     transform: scale(1.5);
 }
-
-#downarrow:hover {
-    transition: 0.5s;
-    transform: scale(1.5);
-}
-
 .arrowbutton {
     border: none;
     background: none;
 }
+
