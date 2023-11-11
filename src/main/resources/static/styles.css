@@ -25,12 +25,38 @@
 
 .vote
 {
+    gap: 0.5rem;
     width: 15px;
-    float: left; clear: left;
+    /*float: left; clear: left;*/
+    display: flex;
 }
 
 .vote img
 {
-    display: block;
-    float: none; clear: both;
+    display: flex;
+    /*float: none; clear: both;*/
+}
+
+.card-header {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+#uparrow {
+    transition: 0.5s;
+}
+#uparrow:hover {
+    fill: #6aef7d;
+    transition: 0.5s;
+    transform: scale(1.5);
+}
+
+#downarrow {
+    transition: 0.5s;
+}
+
+#downarrow:hover {
+    transition: 0.5s;
+    transform: scale(1.5);
 }
