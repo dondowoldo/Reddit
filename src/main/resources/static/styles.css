@@ -27,14 +27,12 @@
 {
     gap: 0.5rem;
     width: 15px;
-    /*float: left; clear: left;*/
     display: flex;
 }
 
 .vote img
 {
     display: flex;
-    /*float: none; clear: both;*/
 }
 
 .card-header {
@@ -47,7 +45,6 @@
     transition: 0.5s;
 }
 #uparrow:hover {
-    fill: #6aef7d;
     transition: 0.5s;
     transform: scale(1.5);
 }

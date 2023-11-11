@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 @Setter
@@ -48,5 +49,12 @@ public class User {
 
     public void deleteVote(Vote vote) {
         this.votes.remove(vote);
+    }
+
+    public Integer getPostVoteValue(Post post) {
+        return post.getVotes().stream()
+                .filter(v -> Objects.equals(v.getUser().getId(), this.id))
+                .map(Vote::getValue)
+                .findFirst().orElse(0);
     }
 }
