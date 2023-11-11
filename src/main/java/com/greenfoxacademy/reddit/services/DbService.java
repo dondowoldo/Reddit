@@ -47,11 +47,10 @@ public class DbService {
         if (post.isEmpty() || loggedUser == null || incomingVoteValue == null) {
             return;
         }
-        Optional<Vote> oldVote = voteMade(post.get(), loggedUser);
 
+        Optional<Vote> oldVote = voteMade(post.get(), loggedUser);
         if (oldVote.isEmpty()) {
             Vote vote = new Vote(incomingVoteValue, loggedUser, post.get());
-
             voteService.save(vote);
             post.get().addVote(vote);
             loggedUser.addVote(vote);
@@ -59,8 +58,6 @@ public class DbService {
             post.get().deleteVote(oldVote.get());
             loggedUser.deleteVote(oldVote.get());
             voteService.delete(oldVote.get());
-
-            // DELETE VOTE FROM REPO, USER, AND POST
         }
     }
     public Optional<Vote> voteMade(Post post, User loggedUser){

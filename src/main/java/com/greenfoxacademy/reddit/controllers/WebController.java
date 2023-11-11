@@ -38,6 +38,8 @@ public class WebController {
         model.addAttribute("isLoggedIn", userService.loggedIn());
         model.addAttribute("posts", postService.findAllDescOrder(searched));
         model.addAttribute("searched", searched);
+        model.addAttribute("userVotes", userService.loggedIn() ?
+                userService.getLoggedInUser().getVotes() : null);
         return "index";
     }
 
