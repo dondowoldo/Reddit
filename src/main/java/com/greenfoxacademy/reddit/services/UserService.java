@@ -8,20 +8,23 @@ import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
 @Service
 public class UserService {
     @Getter
-    private User loggedInUser;
+    private static User CURRENT_USER;
 
     private UserRepository users;
     private UserValidation userValidation;
 
     @Autowired
     public UserService(UserRepository users, UserValidation userValidation) {
+        CURRENT_USER = null;
         this.users = users;
-        this.loggedInUser = null;
         this.userValidation = userValidation;
     }
 
@@ -34,20 +37,27 @@ public class UserService {
     }
 
     public boolean loginUser(String email, String password) {
+        String hashedpass;
+        try {
+            hashedpass = encryptPassword(password);
+        } catch (NoSuchAlgorithmException e) {
+            return false;
+        }
+
         Optional<User> stored = getUserByEmail(email);
-        if (stored.isPresent() && stored.get().getPassword().equals(password)) {
-            loggedInUser = stored.get();
+        if (stored.isPresent() && stored.get().getPassword().equals(hashedpass)) {
+            CURRENT_USER = stored.get();
             return true;
         }
         return false;
     }
 
     public void logOut() {
-        loggedInUser = null;
+        CURRENT_USER = null;
     }
 
     public boolean loggedIn() {
-        return loggedInUser != null;
+        return CURRENT_USER != null;
     }
 
     public Optional<User> getUserByEmail(String email) {
@@ -59,7 +69,7 @@ public class UserService {
             userValidation.registrationValid(form);
             User registeredUser = mapFormToUser(form);
             users.save(registeredUser);
-            loggedInUser = registeredUser;
+            CURRENT_USER = registeredUser;
         } catch (IllegalArgumentException | EntityExistsException e) {
             return e.getMessage();
         }
@@ -69,7 +79,24 @@ public class UserService {
 
     //Use only after validation (userValidation.registrationValid)
     public User mapFormToUser(RegistrationForm form) {
-        return new User(form.getName(), form.getEmail(), form.getPassword());
+        String password;
+        try {
+            password = encryptPassword(form.getPassword());
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Internal error. Try to register later");
+        }
+        return new User(
+                form.getName(),
+                form.getEmail(),
+                password
+        );
+    }
+
+    public String encryptPassword(String password) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        byte[] messageDigest = md.digest(password.getBytes());
+        BigInteger bigInt = new BigInteger(1, messageDigest);
+        return bigInt.toString();
     }
 
 }

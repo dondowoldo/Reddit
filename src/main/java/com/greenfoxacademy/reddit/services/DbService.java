@@ -6,7 +6,6 @@ import com.greenfoxacademy.reddit.models.Vote;
 import com.greenfoxacademy.reddit.repositories.PostRepository;
 import com.greenfoxacademy.reddit.repositories.UserRepository;
 import com.greenfoxacademy.reddit.repositories.VoteRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,26 +16,26 @@ import java.util.Optional;
 public class DbService {
     private PostRepository posts;
     private UserRepository users;
-    private UserService userService;
     private VoteRepository votes;
 
     @Autowired
-    public DbService(PostRepository posts, UserRepository users,
-                     UserService userService,
+    public DbService(PostRepository posts,
+                     UserRepository users,
                      VoteRepository votes) {
         this.posts = posts;
         this.users = users;
         this.votes = votes;
-        this.userService = userService;
     }
 
 
     public void addPost(String postTitle, String postDescription, URL url) {
+        User user = UserService.getCURRENT_USER();
         Post newPost = new Post(postTitle, postDescription, url);
-        newPost.setUser(userService.getLoggedInUser());
+
+        newPost.setUser(user);
         posts.save(newPost);
-        userService.getLoggedInUser().addPost(newPost);
-        userService.save(userService.getLoggedInUser());
+        user.addPost(newPost);
+        users.save(user);
     }
 
     public void addVote(Integer incomingVoteValue, Long postId, User loggedUser) {
@@ -68,9 +67,8 @@ public class DbService {
     public void deletePostById(Long postId) {
         Optional<Post> postToDelete = posts.findById(postId);
         if (postToDelete.isPresent() &&
-                postToDelete.get().getUser().getId() == userService.getLoggedInUser().getId()) {
-            postToDelete.get().getVotes()
-                    .forEach(v -> votes.deleteById(v.getId()));
+                postToDelete.get().getUser().getId() == UserService.getCURRENT_USER().getId()) {
+            votes.deleteAll(postToDelete.get().getVotes());
             posts.deleteById(postId);
         }
     }

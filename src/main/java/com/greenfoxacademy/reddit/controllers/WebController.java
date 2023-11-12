@@ -33,7 +33,7 @@ public class WebController {
         model.addAttribute("isLoggedIn", userService.loggedIn());
         model.addAttribute("posts", postService.findAllDescOrder(searched));
         model.addAttribute("searched", searched);
-        model.addAttribute("user", userService.getLoggedInUser());
+        model.addAttribute("user", UserService.getCURRENT_USER());
         return "index";
     }
 
@@ -85,7 +85,7 @@ public class WebController {
     @PutMapping("/vote")
     public String votePost(Integer vote, Long postId) {
         if (userService.loggedIn()) {
-            dbService.addVote(vote, postId, userService.getLoggedInUser());
+            dbService.addVote(vote, postId, UserService.getCURRENT_USER());
             return "redirect:/";
         }
         return "redirect:/login";
