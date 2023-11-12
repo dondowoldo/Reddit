@@ -3,24 +3,24 @@
             <input type="hidden" name="postId" th:value="${post.id}">
 
             <div style="display:flex;" th:if="${!isLoggedIn}">
-                <button class="arrowbutton" type="submit" name="vote" value="1"><img id="uparrow" src="arrows/up-arrow.svg" alt="^" title="vote up"></button>
-                <button class="arrowbutton" type="submit" name="vote" value="-1"><img id="downarrow" src="arrows/down-arrow.svg" alt="v" title="vote down"></button>
+                <button class="cardbutton" type="submit" name="vote" value="1"><img id="uparrow" src="arrows/up-arrow.svg" alt="^" title="vote up"></button>
+                <button class="cardbutton" type="submit" name="vote" value="-1"><img id="downarrow" src="arrows/down-arrow.svg" alt="v" title="vote down"></button>
             </div>
 
             <div style="display:flex;" th:unless="${!isLoggedIn}">
                 <div style="display:flex;" th:if="${user.getPostVoteValue(post) == 1}">
-                    <button class="arrowbutton" type="submit" name="vote" value="1"><img id="uparrow-v" src="arrows/up-arrow-v.svg" alt="^" title="vote up"></button>
-                    <button class="arrowbutton" type="submit" name="vote" value="-1"><img id="downarrow-d" src="arrows/down-arrow-d.svg" alt="v" title="vote down"></button>
+                    <button class="cardbutton" type="submit" name="vote" value="1"><img id="uparrow-v" src="arrows/up-arrow-v.svg" alt="^" title="vote up"></button>
+                    <button class="cardbutton" type="submit" name="vote" value="-1"><img id="downarrow-d" src="arrows/down-arrow-d.svg" alt="v" title="vote down"></button>
                 </div>
 
                 <div style="display:flex;" th:if="${user.getPostVoteValue(post) == 0}">
-                    <button class="arrowbutton" type="submit" name="vote" value="1"><img id="uparrow" src="arrows/up-arrow.svg" alt="^" title="vote up"></button>
-                    <button class="arrowbutton" type="submit" name="vote" value="-1"><img id="downarrow" src="arrows/down-arrow.svg" alt="v" title="vote down"></button>
+                    <button class="cardbutton" type="submit" name="vote" value="1"><img id="uparrow" src="arrows/up-arrow.svg" alt="^" title="vote up"></button>
+                    <button class="cardbutton" type="submit" name="vote" value="-1"><img id="downarrow" src="arrows/down-arrow.svg" alt="v" title="vote down"></button>
                 </div>
 
                 <div style="display:flex;" th:if="${user.getPostVoteValue(post) == -1}">
-                    <button class="arrowbutton" type="submit" name="vote" value="1"><img id="uparrow-d" src="arrows/up-arrow-d.svg" alt="^" title="vote up"></button>
-                    <button class="arrowbutton" type="submit" name="vote" value="-1"><img id="downarrow-v" src="arrows/down-arrow-v.svg" alt="v" title="vote down"></button>
+                    <button class="cardbutton" type="submit" name="vote" value="1"><img id="uparrow-d" src="arrows/up-arrow-d.svg" alt="^" title="vote up"></button>
+                    <button class="cardbutton" type="submit" name="vote" value="-1"><img id="downarrow-v" src="arrows/down-arrow-v.svg" alt="v" title="vote down"></button>
                 </div>
 
             </div>
@@ -56,3 +56,10 @@
         </form>
     </div>
 </header>
+
+
+<div th:if="${user != null and post.getUser().id == user.id}" style="display: flex" th:fragment="deletePostFragment">
+    <form th:action="@{/posts/{postId}(postId=${post.id})}" th:method="delete">
+        <button class="cardbutton" id ="deletePost" type="submit" name="postId" value="${post.id}"><img src="x-square.svg" alt="^" title="delete post"></button>
+    </form>
+</div>

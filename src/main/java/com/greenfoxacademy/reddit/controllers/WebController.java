@@ -1,18 +1,13 @@
 package com.greenfoxacademy.reddit.controllers;
 
 import com.greenfoxacademy.reddit.dtos.RegistrationForm;
-import com.greenfoxacademy.reddit.models.Post;
-import com.greenfoxacademy.reddit.models.User;
 import com.greenfoxacademy.reddit.services.DbService;
 import com.greenfoxacademy.reddit.services.PostService;
 import com.greenfoxacademy.reddit.services.UserService;
-import com.greenfoxacademy.reddit.services.VoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URL;
 
@@ -22,17 +17,14 @@ public class WebController {
     private UserService userService;
     private PostService postService;
     private DbService dbService;
-    private VoteService voteService;
 
     @Autowired
     public WebController(UserService userService,
                          PostService postService,
-                         DbService dbService,
-                         VoteService voteService) {
+                         DbService dbService) {
         this.userService = userService;
         this.postService = postService;
         this.dbService = dbService;
-        this.voteService = voteService;
     }
 
     @GetMapping({"/", "/posts"})
@@ -43,6 +35,12 @@ public class WebController {
         model.addAttribute("searched", searched);
         model.addAttribute("user", userService.getLoggedInUser());
         return "index";
+    }
+
+    @DeleteMapping("/posts/{postId}")
+    public String deletePost(@PathVariable Long postId) {
+        dbService.deletePostById(postId);
+        return "redirect:/";
     }
 
     @GetMapping("/posts/add")

@@ -13,10 +13,13 @@
           <header th:replace="~{fragments/fragments.html :: headerFragment}"></header>
 
           <div class="card post" th:each="post : ${posts}">
-            <div class="card-header">
-              <span style="display: inline; font-size: 1.2em; font-family: monospace" th:text="${post.postScore()}"></span>
-              <div class="vote" th:replace="~{fragments/fragments.html :: voteFragment}"></div>
-              <span style="display: inline; font-size: 1.2em; margin-left: 3rem" th:text="${post.title}"></span>
+            <div class="card-header justify-content-between align-items-start">
+              <div style="display: flex">
+                <span style="display: inline; font-size: 1.2em; font-family: monospace" th:text="${post.postScore()}"></span>
+                <div class="vote" th:replace="~{fragments/fragments.html :: voteFragment}"></div>
+                <span style="display: inline; font-size: 1.2em; margin-left: 3rem" th:text="${post.title}"></span>
+              </div>
+              <div th:replace="~{fragments/fragments.html :: deletePostFragment}"></div>
             </div>
             <div class="card-body post-body">
               <blockquote class="blockquote mb-0">

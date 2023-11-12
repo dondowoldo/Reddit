@@ -64,4 +64,7 @@ public class Post {
         return dateFormat.format(this.createDate);
     }
 
+    public void deleteAllVotes() {
+        this.votes.clear();
+    }
 }

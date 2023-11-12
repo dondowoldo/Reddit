@@ -25,6 +25,8 @@
 
 .vote
 {
+    margin-left: 0.5rem;
+    margin-right: 1rem;
     gap: 0.5rem;
     width: 15px;
     display: flex;
@@ -41,14 +43,14 @@
     gap: 1rem;
 }
 
-#uparrow, #downarrow {
+#uparrow, #downarrow, #deletePost {
     transition: 0.5s;
 }
-#uparrow:hover, #downarrow:hover {
+#uparrow:hover, #downarrow:hover, #deletePost:hover {
     transition: 0.5s;
     transform: scale(1.5);
 }
-.arrowbutton {
+.cardbutton {
     border: none;
     background: none;
 }

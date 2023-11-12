@@ -16,35 +16,31 @@ import java.util.Optional;
 @Service
 public class DbService {
     private PostRepository posts;
-    private PostService postService;
     private UserRepository users;
     private UserService userService;
-    private VoteService voteService;
     private VoteRepository votes;
 
     @Autowired
     public DbService(PostRepository posts, UserRepository users,
-                     PostService postService, UserService userService,
-                     VoteService voteService, VoteRepository votes) {
+                     UserService userService,
+                     VoteRepository votes) {
         this.posts = posts;
         this.users = users;
-        this.postService = postService;
-        this.userService = userService;
-        this.voteService = voteService;
         this.votes = votes;
+        this.userService = userService;
     }
 
 
     public void addPost(String postTitle, String postDescription, URL url) {
         Post newPost = new Post(postTitle, postDescription, url);
         newPost.setUser(userService.getLoggedInUser());
-        postService.save(newPost);
+        posts.save(newPost);
         userService.getLoggedInUser().addPost(newPost);
         userService.save(userService.getLoggedInUser());
     }
 
     public void addVote(Integer incomingVoteValue, Long postId, User loggedUser) {
-        Optional<Post> post = postService.getPostById(postId);
+        Optional<Post> post = posts.findById(postId);
         if (post.isEmpty() || loggedUser == null || incomingVoteValue == null) {
             return;
         }
@@ -54,18 +50,28 @@ public class DbService {
             incomingVoteValue = incomingVoteValue > 1 ? 1 : incomingVoteValue;
             incomingVoteValue = incomingVoteValue < -1 ? -1 : incomingVoteValue;
             Vote vote = new Vote(incomingVoteValue, loggedUser, post.get());
-            voteService.save(vote);
+            votes.save(vote);
             post.get().addVote(vote);
             loggedUser.addVote(vote);
         } else if (oldVote.get().getValue() == incomingVoteValue) {
             post.get().deleteVote(oldVote.get());
             loggedUser.deleteVote(oldVote.get());
-            voteService.delete(oldVote.get());
+            votes.delete(oldVote.get());
         }
     }
     public Optional<Vote> voteMade(Post post, User loggedUser){
         return post.getVotes().stream()
                 .filter(v -> v.getUser().getId().equals(loggedUser.getId()))
                 .findFirst();
+    }
+
+    public void deletePostById(Long postId) {
+        Optional<Post> postToDelete = posts.findById(postId);
+        if (postToDelete.isPresent() &&
+                postToDelete.get().getUser().getId() == userService.getLoggedInUser().getId()) {
+            postToDelete.get().getVotes()
+                    .forEach(v -> votes.deleteById(v.getId()));
+            posts.deleteById(postId);
+        }
     }
 }
