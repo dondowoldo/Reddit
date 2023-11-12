@@ -3,6 +3,8 @@ package com.greenfoxacademy.reddit.models;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.net.URL;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -18,6 +20,7 @@ public class Post {
     private String title;
     private String description;
     private Timestamp createDate;
+    private URL url;
 
     @OneToMany(mappedBy = "post")
     private List<Vote> votes;
@@ -30,10 +33,11 @@ public class Post {
         this.createDate = new Timestamp(System.currentTimeMillis());
     }
 
-    public Post(String title, String description) {
+    public Post(String title, String description, URL url) {
         this();
         this.title = title;
         this.description = description;
+        this.url = url;
     }
 
     public void addVote(Vote vote) {

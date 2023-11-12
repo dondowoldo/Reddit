@@ -54,26 +54,22 @@ public class UserService {
         return users.findByEmail(email);
     }
 
-    public String registerUser(User user) {
-        if (getUserByEmail(user.getEmail()).isPresent()) {
-            return "This e-mail already exists.";
-        } else if (user.getName().isEmpty()) {
-            return "You need to enter your name";
-        }
+    public String registerUser(RegistrationForm form) {
         try {
-            userValidation.registrationValid(user);
-            users.save(user);
-            loggedInUser = user;
+            userValidation.registrationValid(form);
+            User registeredUser = mapFormToUser(form);
+            users.save(registeredUser);
+            loggedInUser = registeredUser;
         } catch (IllegalArgumentException | EntityExistsException e) {
             return e.getMessage();
         }
         return "valid";
     }
 
-    public RegistrationForm mapToForm(User user) {
-        String name = user.getName() == null ? "" : user.getName();
-        String email = user.getEmail() == null ? "" : user.getEmail();
-        String password = user.getPassword() == null ? "" : user.getPassword();
-        return new RegistrationForm(name, email, password);
+
+    //Use only after validation (userValidation.registrationValid)
+    public User mapFormToUser(RegistrationForm form) {
+        return new User(form.getName(), form.getEmail(), form.getPassword());
     }
+
 }

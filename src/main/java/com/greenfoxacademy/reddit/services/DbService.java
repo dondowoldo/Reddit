@@ -10,6 +10,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.net.URL;
 import java.util.Optional;
 
 @Service
@@ -34,8 +35,8 @@ public class DbService {
     }
 
 
-    public void addPost(String postTitle, String postDescription) {
-        Post newPost = new Post(postTitle, postDescription);
+    public void addPost(String postTitle, String postDescription, URL url) {
+        Post newPost = new Post(postTitle, postDescription, url);
         newPost.setUser(userService.getLoggedInUser());
         postService.save(newPost);
         userService.getLoggedInUser().addPost(newPost);
@@ -50,6 +51,8 @@ public class DbService {
 
         Optional<Vote> oldVote = voteMade(post.get(), loggedUser);
         if (oldVote.isEmpty()) {
+            incomingVoteValue = incomingVoteValue > 1 ? 1 : incomingVoteValue;
+            incomingVoteValue = incomingVoteValue < -1 ? -1 : incomingVoteValue;
             Vote vote = new Vote(incomingVoteValue, loggedUser, post.get());
             voteService.save(vote);
             post.get().addVote(vote);

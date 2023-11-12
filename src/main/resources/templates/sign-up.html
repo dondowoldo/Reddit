@@ -15,7 +15,7 @@
     </style>
     <div class="container">
         <section>
-            <div class="container mt-5 pt-5">
+            <div class="container mt-4 pt-4 mb-2">
               <div class="row">
                 <div class="col-12 col-sm-7 col-md-6 m-auto">
                   <div class="card border-0 shadow text-center">
@@ -23,14 +23,17 @@
                         <a th:href="@{/}"><img class="mx-auto me-2" width="70" height="70" src="greenfox.png" alt=""></a>
                       <form th:action="@{/register}" method="post" th:object="${regForm}">
 
-                          <input type="text" th:if="${error.contains('name')}" th:field="*{name}" class="form-control my-4 py-2 is-invalid" placeholder="Full Name" />
-                          <input type="text" th:unless="${error.contains('name')}" th:field="*{name}" class="form-control my-4 py-2" placeholder="Full Name" />
+                          <input type="text" th:if="${error.contains('name')}" th:field="*{name}" class="form-control my-4 py-2 is-invalid" placeholder="Name" />
+                          <input type="text" th:unless="${error.contains('name')}" th:field="*{name}" class="form-control my-4 py-2" placeholder="Name" />
 
                           <input type="email" th:if="${error.contains('e-mail')}" th:field="*{email}" class="form-control my-4 py-2 is-invalid" placeholder="E-mail" />
                           <input type="email" th:unless="${error.contains('e-mail')}" th:field="*{email}" class="form-control my-4 py-2" placeholder="E-mail" />
 
                           <input type="password" th:if="${error.contains('Password')}" name="password" class="form-control my-4 py-2 is-invalid" placeholder="Password" />
                           <input type="password" th:unless="${error.contains('Password')}" name="password" class="form-control my-4 py-2" placeholder="Password" />
+
+                          <input type="password" th:if="${error.contains('Password')}" name="confirmPassword" class="form-control my-4 py-2 is-invalid" placeholder="Confirm password" />
+                          <input type="password" th:unless="${error.contains('Password')}" name="confirmPassword" class="form-control my-4 py-2" placeholder="Confirm password" />
 
                           <div th:unless="${error.isEmpty()}" id="validationServerEmailFeedback" class="invalid-feedback" th:text="${error}">
                           </div>

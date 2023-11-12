@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
+import java.net.URL;
+
 
 @Controller
 public class WebController {
@@ -49,11 +51,11 @@ public class WebController {
     }
 
     @PostMapping ("/posts/add")
-    public String addPostSubmit(String title, String description) {
+    public String addPostSubmit(String title, String description, URL url) {
         if (!userService.loggedIn()) {
             return "redirect:/";
         }
-        dbService.addPost(title, description);
+        dbService.addPost(title, description, url);
         return "redirect:/";
     }
 
@@ -102,14 +104,13 @@ public class WebController {
     }
 
     @PostMapping("/register")
-    public String signUpSubmit(Model model, User user) {
-
-        if (userService.registerUser(user).equals("valid")) {
+    public String signUpSubmit(Model model, RegistrationForm form) {
+        if (userService.registerUser(form).equals("valid")) {
             return "redirect:/";
         }
 
-        model.addAttribute("error", userService.registerUser(user));
-        model.addAttribute("regForm", userService.mapToForm(user));
+        model.addAttribute("error", userService.registerUser(form));
+        model.addAttribute("regForm", form);
         return "sign-up";
     }
 }

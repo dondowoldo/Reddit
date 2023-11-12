@@ -21,46 +21,18 @@
             <div class="card-body post-body">
               <blockquote class="blockquote mb-0">
                 <p th:text="${post.description}"></p>
+                <a th:if="${post.url != null}" target="blank" th:href="${post.url}" th:text="${post.url}"></a>
                 <footer style="display: flex; justify-content: space-between" class="blockquote-footer">
                   <div>
                     — Posted by :
                   <cite title="Post author" th:text="${post.getUser().name}"></cite>
                   </div>
 
-                  <cite title="Post author" th:text="${post.formattedDate()}"></cite>
+                  <cite title="Post date" th:text="${post.formattedDate()}"></cite>
                 </footer>
               </blockquote>
             </div>
           </div>
-
-          <div class="card post">
-            <div class="card-header">
-              Post Title
-            </div>
-            <div class="card-body post-body">
-              <blockquote class="blockquote mb-0">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-                <footer class="blockquote-footer">Posted by :  <cite title="Post Author">Daniel</cite></footer>
-              </blockquote>
-            </div>
-          </div>
-
-          <div class="card post">
-            <div class="card-header">
-              Post Title
-            </div>
-            <div class="card-body post-body">
-              <blockquote class="blockquote mb-0">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-                <footer class="blockquote-footer">Posted by :  <cite title="Source Title">Daniel</cite></footer>
-              </blockquote>
-            </div>
-          </div>
-
-
-
-
-
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>

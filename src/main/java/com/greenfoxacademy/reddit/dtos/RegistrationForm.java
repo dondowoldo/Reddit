@@ -9,13 +9,13 @@ public class RegistrationForm {
     private String name;
     private String email;
     private String password;
-//    private String confirmPassword;
+    private String confirmPassword;
 
-    public RegistrationForm(String name, String email, String password) {
+    public RegistrationForm(String name, String email, String password, String confirmPassword) {
         this.name = name;
         this.email = email;
         this.password = password;
-//        this.confirmPassword = confirmPassword;
+        this.confirmPassword = confirmPassword;
     }
 
     public RegistrationForm() {

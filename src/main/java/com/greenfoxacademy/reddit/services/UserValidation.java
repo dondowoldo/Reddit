@@ -1,5 +1,6 @@
 package com.greenfoxacademy.reddit.services;
 
+import com.greenfoxacademy.reddit.dtos.RegistrationForm;
 import com.greenfoxacademy.reddit.models.User;
 import com.greenfoxacademy.reddit.repositories.UserRepository;
 import jakarta.persistence.EntityExistsException;
@@ -7,6 +8,7 @@ import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,23 +26,36 @@ public class UserValidation {
     }
 
 
-    public void registrationValid(User user) throws IllegalArgumentException, EntityExistsException {
+    private Optional<User> getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    public void registrationValid(RegistrationForm form) throws IllegalArgumentException, EntityExistsException {
+        // Name validation
+        if (form.getName().isEmpty()) {
+            throw new IllegalArgumentException("You need to enter your name");
+        }
 
         // Email validation
+        if (getUserByEmail(form.getEmail()).isPresent()) {
+            throw new EntityExistsException("This e-mail already exists.");
+        }
         Pattern pattern = Pattern.compile(EMAIL_PATTERN);
-        Matcher matcher = pattern.matcher(user.getEmail());
-        if (user.getEmail().isEmpty()) {
+        Matcher matcher = pattern.matcher(form.getEmail());
+        if (form.getEmail().isEmpty()) {
             throw new IllegalArgumentException("You need to enter an e-mail");
         }
         if (!matcher.matches()) {
             throw new IllegalArgumentException("Invalid e-mail format.");
         }
+
         // Password validation
-        if (user.getPassword().length() < MIN_PASSWORD_LENGTH) {
+        if (form.getPassword().length() < MIN_PASSWORD_LENGTH) {
             throw new IllegalArgumentException("Password needs to be at least "
                     + MIN_PASSWORD_LENGTH + " characters long.");
         }
+        if (!form.getPassword().equals(form.getConfirmPassword())) {
+            throw new IllegalArgumentException("Passwords do not match");
+        }
     }
-
-
 }

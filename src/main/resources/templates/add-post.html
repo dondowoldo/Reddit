@@ -23,6 +23,7 @@
                 <form th:action="@{/posts/add}" method="post">
                   <input type="text" name="title" class="form-control my-4 py-2" placeholder="Title" />
                   <textarea style="resize: none" name="description" class="form-control my-4 py-2" placeholder="Description..."></textarea>
+                  <input type="url" name="url" class="form-control my-4 py-2" placeholder="Include URL (optional)" />
                   <div class="text-center mt-3">
                     <button class="btn btn-success mb-2">Submit</button>
                   </div>
