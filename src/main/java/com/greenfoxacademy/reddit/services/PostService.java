@@ -34,14 +34,19 @@ public class PostService {
         return posts.findAll();
     }
 
+    public Optional<Post> getPostById(Long id) {
+        return posts.findById(id);
+    }
+
     public List<Post> findAllDescOrder(String search) {
+        final int TOP_RATED = 10;
         Predicate<Post> searchFilter = p -> search == null ? true : (
                 p.getTitle().toLowerCase().contains(search.toLowerCase()) ||
                 p.getDescription().toLowerCase().contains(search.toLowerCase()) ||
                 p.getUser().getName().toLowerCase().contains(search.toLowerCase())
         );
 
-        if (posts.findAll().size() < 10) {
+        if (posts.findAll().size() < TOP_RATED) {
             return posts.findAll().stream()
                     .filter(searchFilter)
                     .sorted(Comparator.comparing(Post :: postScore)
@@ -56,7 +61,7 @@ public class PostService {
                 .sorted(Comparator.comparing(Post :: postScore)
                         .reversed()
                         .thenComparing(Post :: getCreateDate).reversed())
-                .limit(10);
+                .limit(TOP_RATED);
 
         Stream<Post> restByCreation = posts.findAll()
                 .stream()
@@ -69,8 +74,5 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    public Optional<Post> getPostById(Long id) {
-        return posts.findById(id);
-    }
 
 }

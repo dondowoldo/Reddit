@@ -53,6 +53,15 @@
     background: none;
 }
 
+#uparrow-v, #downarrow-v {
+    transition: 0.5s;
+}
+
+#uparrow-v:hover, #downarrow-v:hover {
+    transition: 0.5s;
+    transform: scale(0.8);
+}
+
 .blockquote-footer::before {
     display: none;
     content: "— ";
