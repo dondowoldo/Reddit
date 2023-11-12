@@ -30,6 +30,7 @@ public class User {
     public User() {
         this.role = Role.USER;
         this.posts = new ArrayList<>();
+        this.votes = new ArrayList<>();
     }
 
     public User(String name, String email, String password) {

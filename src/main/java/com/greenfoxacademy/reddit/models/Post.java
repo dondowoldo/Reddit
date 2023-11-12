@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 
@@ -52,6 +53,11 @@ public class Post {
         return votes.stream()
                 .mapToInt(Vote::getValue)
                 .sum();
+    }
+
+    public String formattedDate() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        return dateFormat.format(this.createDate);
     }
 
 }

@@ -21,8 +21,13 @@
             <div class="card-body post-body">
               <blockquote class="blockquote mb-0">
                 <p th:text="${post.description}"></p>
-                <footer class="blockquote-footer">Posted by :
+                <footer style="display: flex; justify-content: space-between" class="blockquote-footer">
+                  <div>
+                    — Posted by :
                   <cite title="Post author" th:text="${post.getUser().name}"></cite>
+                  </div>
+
+                  <cite title="Post author" th:text="${post.formattedDate()}"></cite>
                 </footer>
               </blockquote>
             </div>

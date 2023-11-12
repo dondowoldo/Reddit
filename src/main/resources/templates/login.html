@@ -20,11 +20,17 @@
                 <div class="col-12 col-sm-7 col-md-6 m-auto">
                   <div class="card border-0 shadow text-center">
                     <div class="card-body">
-                        <img class="mx-auto" width="70" height="70" src="greenfox.png" alt="">
+                        <a th:href="@{/}"><img class="mx-auto me-2" width="70" height="70" src="greenfox.png" alt=""></a>
                       <form th:action="@{/login}" method="post">
-                        <input type="text" name="email" class="form-control my-4 py-2" placeholder="E-mail" />
-                        <input type="password" name="password" class="form-control my-4 py-2" placeholder="Password" />
-                        <div class="text-center mt-3">
+
+                          <input th:if="${error == null}" type="email" name="email" class="form-control my-4 py-2" placeholder="E-mail" />
+                          <input th:unless="${error == null}" type="email" name="email" th:value="${email}" class="form-control my-4 py-2 is-invalid" placeholder="E-mail" />
+
+                          <input th:if="${error == null}" type="password" name="password" class="form-control my-4 py-2" placeholder="Password" />
+                          <input th:unless="${error == null}" type="password" name="password" class="form-control my-4 py-2 is-invalid" placeholder="Password" />
+                          <div th:unless="${error == null}" id="validationServerEmailFeedback" class="invalid-feedback" th:text="${error}">
+                          </div>
+                          <div class="text-center mt-3">
                           <button class="btn btn-success mb-2">Login</button>
                           <a href="#" class="nav-link">Don't have an account yet ?</a>
                         </div>

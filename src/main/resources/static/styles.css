@@ -53,3 +53,21 @@
     background: none;
 }
 
+.blockquote-footer::before {
+    display: none;
+    content: "— ";
+}
+.blockquote-footer {
+    margin: 0;
+}
+
+
+.me-2:hover{
+    transform: scale(1.4);
+    transition: 1s;
+}
+
+.me-2 {
+    transform: scale(1);
+    transition: 1s;
+}
