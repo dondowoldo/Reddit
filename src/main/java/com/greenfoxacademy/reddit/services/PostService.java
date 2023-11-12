@@ -59,8 +59,8 @@ public class PostService {
                 .stream()
                 .filter(searchFilter)
                 .sorted(Comparator.comparing(Post :: postScore)
-                        .reversed()
-                        .thenComparing(Post :: getCreateDate).reversed())
+                        .thenComparing(Post :: getCreateDate)
+                        .reversed())
                 .limit(TOP_RATED);
 
         Stream<Post> restByCreation = posts.findAll()
