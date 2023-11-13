@@ -6,12 +6,14 @@ import com.greenfoxacademy.reddit.models.Vote;
 import com.greenfoxacademy.reddit.repositories.PostRepository;
 import com.greenfoxacademy.reddit.repositories.UserRepository;
 import com.greenfoxacademy.reddit.repositories.VoteRepository;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.net.URL;
 import java.util.Optional;
 
+@Getter
 @Service
 public class DbService {
     private PostRepository posts;
@@ -29,7 +31,7 @@ public class DbService {
 
 
     public void addPost(String postTitle, String postDescription, URL url) {
-        User user = UserService.getCURRENT_USER();
+        User user = UserService.getCurrentUser();
         Post newPost = new Post(postTitle, postDescription, url);
 
         newPost.setUser(user);
@@ -67,9 +69,12 @@ public class DbService {
     public void deletePostById(Long postId) {
         Optional<Post> postToDelete = posts.findById(postId);
         if (postToDelete.isPresent() &&
-                postToDelete.get().getUser().getId() == UserService.getCURRENT_USER().getId()) {
+                postToDelete.get().getUser().getId() == UserService.getCurrentUser().getId()) {
             votes.deleteAll(postToDelete.get().getVotes());
             posts.deleteById(postId);
         }
+    }
+    public Optional<Post> getPostById(Long id) {
+        return posts.findById(id);
     }
 }

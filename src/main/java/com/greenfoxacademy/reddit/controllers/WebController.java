@@ -4,6 +4,7 @@ import com.greenfoxacademy.reddit.dtos.RegistrationForm;
 import com.greenfoxacademy.reddit.services.DbService;
 import com.greenfoxacademy.reddit.services.PostService;
 import com.greenfoxacademy.reddit.services.UserService;
+import com.greenfoxacademy.reddit.services.VoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,15 +17,15 @@ import java.net.URL;
 public class WebController {
     private UserService userService;
     private PostService postService;
-    private DbService dbService;
+    private VoteService voteService;
 
     @Autowired
     public WebController(UserService userService,
                          PostService postService,
-                         DbService dbService) {
+                         VoteService voteService) {
         this.userService = userService;
         this.postService = postService;
-        this.dbService = dbService;
+        this.voteService = voteService;
     }
 
     @GetMapping({"/", "/posts"})
@@ -33,13 +34,13 @@ public class WebController {
         model.addAttribute("isLoggedIn", userService.loggedIn());
         model.addAttribute("posts", postService.findAllDescOrder(searched));
         model.addAttribute("searched", searched);
-        model.addAttribute("user", UserService.getCURRENT_USER());
+        model.addAttribute("user", UserService.getCurrentUser());
         return "index";
     }
 
     @DeleteMapping("/posts/{postId}")
     public String deletePost(@PathVariable Long postId) {
-        dbService.deletePostById(postId);
+        postService.deletePostById(postId);
         return "redirect:/";
     }
 
@@ -53,7 +54,7 @@ public class WebController {
         if (!userService.loggedIn()) {
             return "redirect:/";
         }
-        dbService.addPost(title, description, url);
+        postService.addPost(title, description, url);
         return "redirect:/";
     }
 
@@ -85,7 +86,7 @@ public class WebController {
     @PutMapping("/vote")
     public String votePost(Integer vote, Long postId) {
         if (userService.loggedIn()) {
-            dbService.addVote(vote, postId, UserService.getCURRENT_USER());
+            voteService.addVote(vote, postId);
             return "redirect:/";
         }
         return "redirect:/login";

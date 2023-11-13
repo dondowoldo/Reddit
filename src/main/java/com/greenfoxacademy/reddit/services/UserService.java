@@ -16,60 +16,51 @@ import java.util.Optional;
 @Service
 public class UserService {
     @Getter
-    private static User CURRENT_USER;
-
-    private UserRepository users;
+    private static User currentUser;
+    private DbService dbService;
     private UserValidation userValidation;
 
     @Autowired
-    public UserService(UserRepository users, UserValidation userValidation) {
-        CURRENT_USER = null;
-        this.users = users;
+    public UserService(UserValidation userValidation, DbService dbService) {
+        currentUser = null;
         this.userValidation = userValidation;
-    }
-
-    public User save(User user) {
-        return users.save(user);
-    }
-
-    public Optional<User> findById(Long userId) {
-        return users.findById(userId);
+        this.dbService = dbService;
     }
 
     public boolean loginUser(String email, String password) {
-        String hashedpass;
+        String hashedPass;
         try {
-            hashedpass = encryptPassword(password);
+            hashedPass = encryptPassword(password);
         } catch (NoSuchAlgorithmException e) {
             return false;
         }
 
         Optional<User> stored = getUserByEmail(email);
-        if (stored.isPresent() && stored.get().getPassword().equals(hashedpass)) {
-            CURRENT_USER = stored.get();
+        if (stored.isPresent() && stored.get().getPassword().equals(hashedPass)) {
+            currentUser = stored.get();
             return true;
         }
         return false;
     }
 
     public void logOut() {
-        CURRENT_USER = null;
+        currentUser = null;
     }
 
     public boolean loggedIn() {
-        return CURRENT_USER != null;
+        return currentUser != null;
     }
 
     public Optional<User> getUserByEmail(String email) {
-        return users.findByEmail(email);
+        return dbService.getUsers().findByEmail(email);
     }
 
     public String registerUser(RegistrationForm form) {
         try {
             userValidation.registrationValid(form);
             User registeredUser = mapFormToUser(form);
-            users.save(registeredUser);
-            CURRENT_USER = registeredUser;
+            dbService.getUsers().save(registeredUser);
+            currentUser = registeredUser;
         } catch (IllegalArgumentException | EntityExistsException e) {
             return e.getMessage();
         }

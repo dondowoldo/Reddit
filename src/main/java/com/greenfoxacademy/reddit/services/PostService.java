@@ -6,6 +6,7 @@ import com.greenfoxacademy.reddit.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -16,27 +17,26 @@ import java.util.stream.Stream;
 
 @Service
 public class PostService {
-    private PostRepository posts;
+    private DbService dbService;
 
     @Autowired
-    public PostService(PostRepository posts) {
-        this.posts = posts;
-    }
-
-    public Post save(Post post) {
-        return posts.save(post);
-    }
-
-    public Optional<Post> findById(Long postId) {
-        return posts.findById(postId);
-    }
-
-    public List<Post> findAll() {
-        return posts.findAll();
+    public PostService(DbService dbService) {
+        this.dbService = dbService;
     }
 
     public Optional<Post> getPostById(Long id) {
-        return posts.findById(id);
+        return dbService.getPostById(id);
+    }
+
+    public List<Post> getAllPosts() {
+        return dbService.getPosts().findAll();
+    }
+
+    public void addPost(String postTitle, String postDescription, URL url) {
+        dbService.addPost(postTitle, postDescription, url);
+    }
+    public void deletePostById(Long postId) {
+        dbService.deletePostById(postId);
     }
 
     public List<Post> findAllDescOrder(String search) {
@@ -46,9 +46,10 @@ public class PostService {
                 p.getDescription().toLowerCase().contains(search.toLowerCase()) ||
                 p.getUser().getName().toLowerCase().contains(search.toLowerCase())
         );
+        List<Post> allPosts = getAllPosts();
 
-        if (posts.findAll().size() < TOP_RATED) {
-            return posts.findAll().stream()
+        if (getAllPosts().size() < TOP_RATED) {
+            return allPosts.stream()
                     .filter(searchFilter)
                     .sorted(Comparator.comparing(Post :: postScore)
                             .thenComparing(Post :: getCreateDate)
@@ -56,7 +57,7 @@ public class PostService {
                     .collect(Collectors.toList());
         }
 
-        Stream<Post> bestRated = posts.findAll()
+        Stream<Post> bestRated = allPosts
                 .stream()
                 .filter(searchFilter)
                 .sorted(Comparator.comparing(Post :: postScore)
@@ -64,7 +65,7 @@ public class PostService {
                         .reversed())
                 .limit(TOP_RATED);
 
-        Stream<Post> restByCreation = posts.findAll()
+        Stream<Post> restByCreation = allPosts
                 .stream()
                 .filter(searchFilter)
                 .sorted(Comparator.comparing(Post :: getCreateDate)
