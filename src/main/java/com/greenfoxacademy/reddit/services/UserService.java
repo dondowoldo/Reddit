@@ -59,28 +59,18 @@ public class UserService {
         try {
             userValidation.registrationValid(form);
             User registeredUser = mapFormToUser(form);
+            registeredUser.setPassword(encryptPassword(registeredUser.getPassword()));
             dbService.getUsers().save(registeredUser);
             currentUser = registeredUser;
-        } catch (IllegalArgumentException | EntityExistsException e) {
+        } catch (IllegalArgumentException | EntityExistsException | NoSuchAlgorithmException e) {
             return e.getMessage();
         }
         return "valid";
     }
 
-
     //Use only after validation (userValidation.registrationValid)
     public User mapFormToUser(RegistrationForm form) {
-        String password;
-        try {
-            password = encryptPassword(form.getPassword());
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Internal error. Try to register later");
-        }
-        return new User(
-                form.getName(),
-                form.getEmail(),
-                password
-        );
+        return new User(form.getName(), form.getEmail(), form.getPassword());
     }
 
     public String encryptPassword(String password) throws NoSuchAlgorithmException {
